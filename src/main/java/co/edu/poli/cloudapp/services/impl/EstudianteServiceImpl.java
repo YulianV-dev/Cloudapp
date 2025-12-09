@@ -36,8 +36,14 @@ public class EstudianteServiceImpl implements IEstudianteService{
 
     @Override
     public EstudianteDTO update(Long id, EstudianteDTO estudianteDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        Estudiante existente = repoEstudiante.findById(id).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+        existente.setNomEstudiante(estudianteDTO.getNomEstudiante());
+        existente.setApeEstudiante(estudianteDTO.getApeEstudiante());
+        existente.setFechaNacimiento(estudianteDTO.getFechaNacimiento());
+        existente.setEmail(estudianteDTO.getEmail());
+
+        Estudiante saved = repoEstudiante.save(existente);
+        return modelMapper.map(saved, EstudianteDTO.class);
     }
 
     @Override
@@ -46,17 +52,19 @@ public class EstudianteServiceImpl implements IEstudianteService{
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
-    @Override
-    public EstudianteDTO findById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
-    }
+
 
     @Override
     public List<EstudianteDTO> findAll() {
         return repoEstudiante.findAll().stream()
         .map(e -> modelMapper.map(e, EstudianteDTO.class))
         .collect(Collectors.toList());           
+    }
+
+    @Override
+    public EstudianteDTO findById(Long id) {
+        Estudiante e = repoEstudiante.findById(id).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+        return modelMapper.map(e, EstudianteDTO.class);
     }
 
 }

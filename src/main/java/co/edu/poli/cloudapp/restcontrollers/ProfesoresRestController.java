@@ -32,4 +32,6 @@ public class ProfesoresRestController {
         return ResponseEntity.created(URI.create("/api/profesores/" + created.getIdProfesor())).body(created);
 
     }
+
+    
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import co.edu.poli.cloudapp.dto.ProfesorDTO;
 import co.edu.poli.cloudapp.entities.Profesor;
 import co.edu.poli.cloudapp.repositories.IProfesorRepository;
@@ -48,14 +49,20 @@ public class ProfesorServiceImpl implements IProfesorService{
 
     @Override
     public ProfesorDTO findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        Profesor p = repoProfesor.findById(id).orElseThrow(() -> new RuntimeException("Profesor no encontrado"));
+        return modelMapper.map(p, ProfesorDTO.class);
     }
 
     @Override
     public ProfesorDTO update(Long id, ProfesorDTO profesorDTO) {
-        // TODO Auto-generated method stub
-        return null;
+        Profesor existente = repoProfesor.findById(id).orElseThrow(() -> new RuntimeException("Profesor no encontrado"));
+        existente.setNomProfesor(profesorDTO.getNomProfesor());
+        existente.setApeProfesor(profesorDTO.getApeProfesor());
+        existente.setFechaNacimiento(profesorDTO.getFechaNacimiento());
+        existente.setEmail(profesorDTO.getEmail());
+
+        Profesor saved = repoProfesor.save(existente);
+        return modelMapper.map(saved, ProfesorDTO.class);
     }
 
 
